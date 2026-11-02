@@ -23,8 +23,7 @@ import { SiteLayout } from '@/components/SiteLayout'
 import { recipeSlug, recipes } from '@/lib/recipes'
 import type { Recipe } from '@/lib/recipes'
 import { useRecipeShelf } from '@/lib/useRecipeShelf'
-import { supabase } from '@/lib/supabase'
-
+import { getSupabase } from "@/lib/supabase";
 /* ------------------------------------------------------------------ */
 /* Footer                                                              */
 /* ------------------------------------------------------------------ */
@@ -257,6 +256,7 @@ const splitLine = (line: string) => {
 /* ---------- page ---------- */
 
 export default function RecipeContent() {
+  const supabase = getSupabase()
   const params = useParams<{ slug: string | string[] }>()
   const raw = Array.isArray(params.slug) ? params.slug[0] : params.slug
 

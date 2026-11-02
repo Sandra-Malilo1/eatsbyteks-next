@@ -25,7 +25,7 @@ import {
 } from '@/lib/recipes'
 
 import type { Recipe } from '@/lib/recipes'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from "@/lib/supabase";
 import { useRecipeShelf } from '@/lib/useRecipeShelf'
 
 type DbRecipe = {
@@ -473,7 +473,7 @@ function RecipesContent() {
 
     async function loadRecipes() {
       try {
-        const { data, error: supabaseError } = await supabase
+        const { data, error: supabaseError } = await getSupabase()
           .from('recipes')
           .select('*')
           .eq('published', true)

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from "@/lib/supabase";
 import type { Recipe } from '@/lib/recipes'
 
 type DbRecipe = {
@@ -41,7 +41,7 @@ export function useSupabaseRecipes() {
     let active = true
 
     async function load() {
-      const { data, error } = await supabase
+      const { data, error } = await getSupabase()
         .from('recipes')
         .select('*')
         .eq('published', true)

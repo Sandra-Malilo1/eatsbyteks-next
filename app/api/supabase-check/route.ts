@@ -1,13 +1,32 @@
-import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+// app/api/supabase-check/route.ts
+import { NextResponse } from "next/server";
+import { getSupabase } from "@/lib/supabase";
 
-
+export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const { count, error } = await supabase
-    .from('recipes')
-    .select('*', { count: 'exact', head: true })
+  try {
+    const supabase = getSupabase();
 
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
-  return NextResponse.json({ ok: true, recipes: count })
+    const { count, error } = await supabase
+      .from("recipes")
+      .select("*", { count: "exact", head: true });
+
+    if (error) {
+      return NextResponse.json(
+        { ok: false, error: error.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ ok: true, recipes: count });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
+  }
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from "@/lib/supabase";
 
 const CATEGORIES = [
   'Breakfast',
@@ -14,6 +14,7 @@ const CATEGORIES = [
 
 export default function AddRecipePage() {
   const router = useRouter()
+  const supabase = getSupabase()
 
   const [checkingAuth, setCheckingAuth] = useState(true)
   const [loggedIn, setLoggedIn] = useState(false)
@@ -92,7 +93,7 @@ export default function AddRecipePage() {
           throw new Error(`Image upload failed: ${uploadError.message}`)
         }
 
-        const { data } = supabase.storage
+        const { data } = getSupabase().storage
           .from('recipe-images')
           .getPublicUrl(fileName)
 

@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { Session } from '@supabase/supabase-js'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from "@/lib/supabase";
 
 const BUCKET = 'recipe-images'
 const MAX_FILE_MB = 5
@@ -124,6 +124,7 @@ const storagePathFromUrl = (url: string) => {
 
 export default function AdminPage() {
   const router = useRouter()
+  const supabase = useMemo(() => getSupabase(), [])
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [recipes, setRecipes] = useState<RecipeRow[]>([])

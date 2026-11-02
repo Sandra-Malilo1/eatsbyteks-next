@@ -16,13 +16,12 @@ import { useRecipeShelf } from '@/lib/useRecipeShelf'
 
 const SQUARE_IMG = 'aspect-[3/4] w-full object-cover'
 
-/* Image size hints so phones download phone-sized files */
 const CARD_SIZES = '(max-width: 640px) 75vw, (max-width: 1024px) 33vw, 400px'
 
 const CARD =
   'block border border-[#1f4d3a]/10 bg-white p-3 transition-shadow hover:shadow-[0_16px_36px_-24px_rgba(31,77,58,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e6a4f]'
 
-/* Swipe carousel on phones, 3-column grid from sm up */
+
 const CAROUSEL =
   '-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-3 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-8 sm:overflow-visible sm:px-0 sm:pb-0'
 const CAROUSEL_ITEM = 'w-[75%] shrink-0 snap-center sm:w-auto'
@@ -38,7 +37,7 @@ const trending: Recipe[] = (() => {
   return chosen.length === 3 ? chosen : recipes.slice(4, 7)
 })()
 
-/* "Popular Recipes Of The Week" shows these three, right under the hero. */
+
 const popular: Recipe[] = homeRecipes.slice(0, 3)
 
 function groupRecipes(list: readonly Recipe[]) {
@@ -72,7 +71,6 @@ const CATEGORIES = Array.from(
   new Set(homeRecipes.map((r: Recipe) => String(r.category)))
 ) as string[]
 
-/* Sample community reviews: replace with real ones when you have them. */
 const COMMUNITY = [
   {
     name: 'Anastasia',
@@ -150,7 +148,6 @@ const PAPER: CSSProperties = {
   ].join(','),
 }
 
-/* The same paper leaning greener, for the long recipe list */
 const PAPER_GREEN: CSSProperties = {
   backgroundColor: '#eaf3ed',
   backgroundImage: [
@@ -162,8 +159,7 @@ const PAPER_GREEN: CSSProperties = {
   ].join(','),
 }
 
-/* Fades in from paper, deepens in the middle, fades back out:
-   no hard edge above or below the quote band */
+
 const BLEND_BAND: CSSProperties = {
   backgroundColor: '#dcebe1',
   backgroundImage: [
@@ -173,9 +169,7 @@ const BLEND_BAND: CSSProperties = {
   backgroundBlendMode: 'normal, multiply',
 }
 
-/* ------------------------------------------------------------------ */
-/* One dish: square photo beside its text, no card                     */
-/* ------------------------------------------------------------------ */
+
 
 function DishRow({
   recipe,

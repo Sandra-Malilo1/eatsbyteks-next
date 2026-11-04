@@ -57,7 +57,7 @@ export function SiteLayout({ children }: { children: React.ReactNode }) {
     return () => mq.removeEventListener('change', onChange)
   }, [])
 
-  const mobileLinks = [...links, { to: '/shopping-list', label: 'Shopping list' }]
+ const mobileLinks = links
 
   return (
     <>

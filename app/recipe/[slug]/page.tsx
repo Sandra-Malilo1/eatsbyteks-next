@@ -2,6 +2,8 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import RecipeContent from './recipe-content'
 
+const BASE = 'https://eatsbyteksrecipes.com'
+
 export default function RecipePage() {
   return (
     <Suspense

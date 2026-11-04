@@ -1,9 +1,6 @@
 export default function robots() {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-    },
-    sitemap: 'https://eatsbyteksrecipes.com/sitemap.xml',
+    rules: [{ userAgent: "*", allow: "/" }],
+    sitemap: "https://eatsbyteksrecipes.com/sitemap.xml",
   };
 }

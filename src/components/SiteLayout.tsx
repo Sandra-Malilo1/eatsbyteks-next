@@ -7,6 +7,7 @@ import { Menu, X, ArrowUpRight, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ScrollMotion } from '@/components/ScrollMotion'
 import { BackToTop } from '@/components/BackToTop'
+import { SiteFooter } from '@/components/SiteFooter'
 
 const links = [
   { to: '/', label: 'Home' },
@@ -183,6 +184,9 @@ export function SiteLayout({ children }: { children: React.ReactNode }) {
 
       {children}
       <BackToTop />
+        <SiteFooter />
+      <BackToTop />
+    
     </>
   )
 }

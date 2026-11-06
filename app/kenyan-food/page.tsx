@@ -53,39 +53,6 @@ const EQUIPMENT = [
   forest #123222 · moss #2f6a45 · sage #8fb88a · mint #cfe3c0 · butter #f6f1c4
 */
 
-/* ------------------------------------------------------------------ */
-/* Footer                                                              */
-/* ------------------------------------------------------------------ */
-
-
-const GRAIN =
-  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/></svg>\")"
-
-const FOOTER_SOCIALS = [
-  { label: 'Instagram', href: '#' },
-  { label: 'TikTok', href: '#' },
-  { label: 'YouTube', href: '#' },
-  { label: 'Pinterest', href: '#' },
-]
-
-const FOOTER_EXPLORE = [
-  { label: 'Home', href: '/' },
-  { label: 'Recipes', href: '/recipes' },
-  { label: 'Collections', href: '/collections' },
-  { label: 'Our story', href: '/our-story' },
- 
-]
-
-const FOOTER_CATEGORIES = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Baked Goods']
-
-const PILLARS = [
-  { label: 'Tested in a real kitchen' },
-  { label: 'Everyday ingredients' },
-  { label: 'Clear, step-by-step method' },
-  { label: 'Made to share' },
-]
-
-/* Still used by the page body (not the footer). */
 function Leaf({ tone = 'a', className = '' }: { tone?: 'a' | 'b'; className?: string }) {
   const fill = tone === 'a' ? '#8fb88a' : '#6f8d54'
   return (
@@ -100,154 +67,6 @@ function Leaf({ tone = 'a', className = '' }: { tone?: 'a' | 'b'; className?: st
         fill="none"
       />
     </svg>
-  )
-}
-
-/* ---- Footer below is exactly as provided, minus the leaves and lemon ---- */
-
-function SiteFooter() {
-  const year = 2026
-
-  return (
-    <footer className="relative" style={{ backgroundColor: '#cfe3c0' }} aria-label="Site footer">
-      {/* Wave: a lighter layer sits behind the dark one for depth */}
-      <svg
-        viewBox="0 0 1440 120"
-        preserveAspectRatio="none"
-        className="relative z-10 -mb-px block h-14 w-full sm:h-24"
-        aria-hidden="true"
-      >
-        <path
-          d="M0,52 C180,112 360,2 560,48 C760,94 920,12 1100,52 C1260,86 1360,36 1440,56 L1440,120 L0,120 Z"
-          fill="#6f8d54"
-          fillOpacity="0.55"
-        />
-        <path
-          d="M0,78 C200,30 420,116 660,70 C900,24 1120,108 1440,62 L1440,120 L0,120 Z"
-          fill="#2f4a24"
-        />
-      </svg>
-
-      <div className="relative overflow-hidden bg-gradient-to-b from-[#2f4a24] via-[#294020] to-[#1b2e13] text-[#f4efd8]">
-        {/* grain over the green so it is not one flat tone */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{ backgroundImage: GRAIN, opacity: 0.55, mixBlendMode: 'soft-light' }}
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -left-32 top-0 size-[28rem] rounded-full bg-[#6f8d54]/25 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-24 bottom-0 size-[26rem] rounded-full bg-[#f7b32b]/10 blur-3xl"
-        />
-
-        <div className="relative mx-auto max-w-7xl px-5 pb-8 pt-6 sm:pt-10 lg:px-8">
-          {/* Call to action */}
-          <div className="flex flex-col items-start justify-between gap-8 border-b border-white/15 pb-12 lg:flex-row lg:items-end">
-            <div className="max-w-2xl">
-              <p className="text-base text-[#f4efd8]/70">Hungry?</p>
-              <h2 className="mt-2 font-display text-4xl leading-[1.05] text-[#fbf6c8] sm:text-5xl lg:text-6xl">
-                Let's cook something good
-              </h2>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/recipes"
-                className="inline-flex items-center gap-2 rounded-full bg-[#fbf6c8] px-7 py-3 text-sm font-semibold text-[#2f4a24] transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#fbf6c8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#2f4a24]"
-              >
-                Browse recipes
-                <ArrowRight size={16} />
-              </Link>
-              <a
-                href="#latest-heading"
-                className="inline-flex items-center rounded-full border border-white/35 px-7 py-3 text-sm font-semibold text-[#f4efd8] transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#fbf6c8]"
-              >
-                Latest recipes
-              </a>
-            </div>
-          </div>
-
-          {/* Columns */}
-          <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-12">
-            <div className="lg:col-span-5">
-              <p className="font-display text-3xl text-[#fbf6c8]">EatsByTeks</p>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#f4efd8]/75">
-                Everyday dinners and something sweet to finish, cooked in a real
-                kitchen and written down so you can cook them too.
-              </p>
-              <ul className="mt-6 flex flex-wrap gap-2">
-                {FOOTER_SOCIALS.map((s) => (
-                  <li key={s.label}>
-                    <a
-                      href={s.href}
-                      className="inline-flex rounded-full border border-white/25 px-4 py-1.5 text-sm text-[#f4efd8] transition-colors hover:border-[#fbf6c8] hover:text-[#fbf6c8]"
-                    >
-                      {s.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <nav aria-label="Explore" className="lg:col-span-2">
-              <h3 className="font-display text-lg text-[#fbf6c8]">Explore</h3>
-              <ul className="mt-4 space-y-3 text-sm">
-                {FOOTER_EXPLORE.map((l) => (
-                  <li key={l.label}>
-                    <Link
-                      href={l.href}
-                      className="text-[#f4efd8]/80 underline-offset-4 transition-colors hover:text-[#fbf6c8] hover:underline"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-
-            <nav aria-label="Categories" className="lg:col-span-2">
-              <h3 className="font-display text-lg text-[#fbf6c8]">Categories</h3>
-              <ul className="mt-4 space-y-3 text-sm">
-                {FOOTER_CATEGORIES.map((c) => (
-                  <li key={c}>
-                    <Link
-                      href={`/recipes?category=${encodeURIComponent(c)}`}
-                      className="text-[#f4efd8]/80 underline-offset-4 transition-colors hover:text-[#fbf6c8] hover:underline"
-                    >
-                      {c}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-
-            <div className="lg:col-span-3">
-              <h3 className="font-display text-lg text-[#fbf6c8]">How we cook</h3>
-              <ul className="mt-4 space-y-3 text-sm text-[#f4efd8]/80">
-                {PILLARS.map((p) => (
-                  <li key={p.label}>{p.label}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom bar */}
-          <div className="flex flex-col items-center justify-between gap-3 border-t border-white/15 pt-6 text-sm text-[#f4efd8]/60 sm:flex-row">
-            <p>© {year} EatsByTeks. All recipes tested in our own kitchen.</p>
-            <a
-              href="#hero-heading"
-              className="underline-offset-4 transition-colors hover:text-[#fbf6c8] hover:underline"
-            >
-              Back to top
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
   )
 }
 
@@ -426,7 +245,7 @@ export default function KenyanPage() {
               data-g="split"
               className="text-center font-display text-3xl sm:text-4xl"
             >
-              <Words text="My kitchen equipments" />
+              <Words text="My kitchen equipment" />
             </h2>
 
             <ul data-g="stagger" className="mt-10 grid gap-10 sm:grid-cols-3 sm:gap-8">
@@ -454,7 +273,6 @@ export default function KenyanPage() {
                   take it to the market.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  
                   <Link href="/recipes" className={ghostBtn}>Browse recipes</Link>
                 </div>
               </div>
@@ -470,7 +288,6 @@ export default function KenyanPage() {
           </section>
         </div>
 
-        <SiteFooter />
       </main>
     </SiteLayout>
   )

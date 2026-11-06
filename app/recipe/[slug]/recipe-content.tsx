@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import type { FormEvent } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import {
@@ -11,12 +10,10 @@ import {
   Clock3,
   Heart,
   ListChecks,
-  Mail,
   Minus,
   Plus,
   Printer,
   Share2,
- 
   Users,
 } from 'lucide-react'
 import { SiteLayout } from '@/components/SiteLayout'
@@ -24,162 +21,9 @@ import { recipeSlug, recipes } from '@/lib/recipes'
 import type { Recipe } from '@/lib/recipes'
 import { useRecipeShelf } from '@/lib/useRecipeShelf'
 import { getSupabase } from "@/lib/supabase";
-/* ------------------------------------------------------------------ */
-/* Footer                                                              */
-/* ------------------------------------------------------------------ */
 
 const GRAIN =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/></svg>\")"
-
-const FOOTER_SOCIALS = [
-  { label: 'Instagram', href: 'https://www.instagram.com/eatsbyteks_/' },
-  { label: 'TikTok', href: 'https://tr.ee/dVG7zg4CMu' },
-  { label: 'YouTube', href: 'https://tr.ee/6U-ToT3P2Z' },
-]
-
-const FOOTER_EXPLORE = [
-  { label: 'Home', href: '/' },
-  { label: 'All recipes', href: '/recipes' },
-]
-
-const FOOTER_CATEGORIES = ['Breakfast', 'Lunch', 'Dinner', 'Dessert']
-
-const PILLARS = [
-  { label: 'Honest ingredients' },
-  { label: 'Simple technique' },
-  { label: 'Good taste' },
-]
-
-const CONTACT_EMAIL = 'Eatsbyteks@gmail.com'
-
-const SUBSTACK_URL = 'https://substack.com/@eatsbyteks'
-
-const FOOTER_LEGAL = [
-  { label: 'Privacy Policy', href: '/EatsByTeks-Privacy-Policy.pdf' },
-  { label: 'Terms of Service', href: '/EatsByTeks-Terms-of-Service.pdf' },
-]
-
-function SiteFooter() {
-  const year = 2026
-  const [email, setEmail] = useState('')
-  const [agreed, setAgreed] = useState(false)
-  const [status, setStatus] = useState<'idle' | 'done'>('idle')
-
-  const subscribe = (e: FormEvent) => {
-    e.preventDefault()
-    if (!email.trim() || !agreed) return
-    window.open(SUBSTACK_URL, '_blank', 'noopener,noreferrer')
-    setEmail('')
-    setAgreed(false)
-    setStatus('done')
-  }
-
-  return (
-    <footer
-      className="relative print:hidden"
-      style={{ backgroundColor: '#faf6e8' }}
-      aria-label="Site footer"
-    >
-      <svg
-        viewBox="0 0 1440 120"
-        preserveAspectRatio="none"
-        className="relative z-10 -mb-px block h-14 w-full sm:h-24"
-        aria-hidden="true"
-      >
-        <path
-          d="M0,52 C180,112 360,2 560,48 C760,94 920,12 1100,52 C1260,86 1360,36 1440,56 L1440,120 L0,120 Z"
-          fill="#6f8d54"
-          fillOpacity="0.55"
-        />
-        <path
-          d="M0,52 C180,112 360,2 560,48 C760,94 920,12 1100,52 C1260,86 1360,36 1440,56 L1440,120 L0,120 Z"
-        />
-      </svg>
-
-      <div className="relative overflow-hidden bg-gradient-to-b from-[#2f4a24] via-[#294020] to-[#1b2e13] text-[#f4efd8]">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{ backgroundImage: GRAIN, opacity: 0.55, mixBlendMode: 'soft-light' }}
-        />
-
-        <div className="relative mx-auto max-w-7xl px-5 pb-8 pt-6 sm:pt-10 lg:px-8">
-          <div className="flex flex-col items-start justify-between gap-8 border-b border-white/15 pb-12 lg:flex-row lg:items-end">
-            <div className="max-w-2xl">
-              <p className="text-base text-[#f4efd8]/70">Hungry?</p>
-              <h2 className="mt-2 font-display text-4xl leading-[1.05] text-[#fbf6c8] sm:text-5xl lg:text-6xl">
-                Let's cook something good
-              </h2>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/recipes"
-                className="inline-flex items-center gap-2 rounded-full bg-[#fbf6c8] px-7 py-3 text-sm font-semibold text-[#2f4a24] transition-colors hover:bg-white"
-              >
-                Browse recipes
-                <ArrowRight size={16} />
-              </Link>
-            </div>
-          </div>
-
-          <div className="my-12 grid gap-8 rounded-2xl bg-white/[0.07] p-6 ring-1 ring-white/15 sm:p-10 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-12">
-            <div className="flex items-start gap-4">
-              <span className="grid size-12 shrink-0 place-items-center rounded-full bg-[#fbf6c8] text-[#2f4a24]">
-                <Mail size={22} aria-hidden="true" />
-              </span>
-              <div>
-                <h3 className="font-display text-2xl text-[#fbf6c8] sm:text-3xl">
-                  Join the EatsByTeks newsletter
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#f4efd8]/75">
-                  One easy recipe, a kitchen tip and the occasional new dish, straight to your inbox.
-                </p>
-              </div>
-            </div>
-
-            {status === 'done' ? (
-              <p role="status" className="font-display text-lg text-[#fbf6c8]">
-                Almost there! Finish subscribing on Substack in the tab that just opened.
-              </p>
-            ) : (
-              <form onSubmit={subscribe} className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <input
-                  type="email"
-                  required
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email address"
-                  className="w-full flex-1 rounded-full bg-white px-5 py-3 text-sm text-[#2f4a24]"
-                />
-                <button
-                  type="submit"
-                  className="rounded-full bg-[#4f7d2e] px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#44691f]"
-                >
-                  Join now
-                </button>
-              </form>
-            )}
-          </div>
-
-          <div className="grid gap-12 pb-14 pt-2 sm:grid-cols-2 lg:grid-cols-12">
-            <div className="lg:col-span-5">
-              <p className="font-display text-3xl text-[#fbf6c8]">EatsByTeks</p>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#f4efd8]/75">
-                Everyday dinners and something sweet to finish, cooked in a real kitchen.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center justify-between gap-3 border-t border-white/15 pt-6 text-sm text-[#f4efd8]/60 sm:flex-row">
-            <p>© {year} EatsByTeks. All recipes tested in our own kitchen.</p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  )
-}
 
 /* ---------- helpers ---------- */
 
@@ -354,7 +198,6 @@ export default function RecipeContent() {
               Loading recipe…
             </h1>
           </section>
-          <SiteFooter />
         </main>
       </SiteLayout>
     )
@@ -378,7 +221,6 @@ export default function RecipeContent() {
               <ArrowLeft size={16} /> All recipes
             </Link>
           </section>
-          <SiteFooter />
         </main>
       </SiteLayout>
     )
@@ -415,9 +257,6 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
       ? `${Math.floor(mins / 60)} hr${mins % 60 ? ` ${mins % 60} min` : ''}`
       : `${mins} min`
 
-  const ringMax = Math.max(90, mins)
-  const ring = 2 * Math.PI * 42
-  const ringFill = (ring * mins) / ringMax
   const progress = steps.length
     ? Math.round((done.length / steps.length) * 100)
     : 0
@@ -463,6 +302,22 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
 
   return (
     <SiteLayout>
+      <style>{`
+        @media print {
+          header, nav, footer { display: none !important; }
+          main {
+            background: #fff !important;
+            background-image: none !important;
+          }
+          #recipe-card {
+            box-shadow: none !important;
+            background: #fff !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+          }
+        }
+      `}</style>
+
       <main
         className="relative overflow-hidden"
         style={{
@@ -473,7 +328,7 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 print:hidden"
           style={{
             backgroundImage: GRAIN,
             opacity: 0.12,
@@ -510,21 +365,13 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
               <button type="button" onClick={share} className={iconBtn}>
                 <Share2 size={16} className="text-[#2f6a45]" /> Share
               </button>
-
-              <button
-                type="button"
-                onClick={() => window.print()}
-                className={iconBtn}
-              >
-                <Printer size={16} className="text-[#2f6a45]" /> Print
-              </button>
             </div>
           </div>
 
-          <div className="mt-8 grid gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
+          <div className="mt-8 grid gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-12 print:block">
             <article
               id="recipe-card"
-              className="rounded-[2.5rem] bg-[#fbf9ef] p-7 shadow-[0_40px_80px_-40px_rgba(18,50,34,0.5)] ring-1 ring-[#d3e5c5] sm:p-10"
+              className="rounded-[2.5rem] bg-[#fbf9ef] p-7 shadow-[0_40px_80px_-40px_rgba(18,50,34,0.5)] ring-1 ring-[#d3e5c5] sm:p-10 print:ring-0"
             >
               <div className="flex items-center gap-4 text-sm text-[#123222]/60">
                 <span>{recipe.category}</span>
@@ -542,19 +389,39 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
                 {recipe.description}
               </p>
 
-              <div
-                id="recipe"
-                className="mt-10 flex scroll-mt-6 items-center justify-between gap-3 border-b border-[#123222]/15 pb-3"
-              >
-                
+              <div className="mt-8 flex flex-wrap gap-3 print:hidden">
+                <Link
+                  href="/recipes"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#123222] px-6 py-3 text-sm font-semibold text-[#f6f1c4] transition-colors hover:bg-[#2f6a45] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123222] focus-visible:ring-offset-2"
+                >
+                  Jump to recipe <ArrowRight size={16} />
+                </Link>
 
-                <div className="inline-flex items-center gap-1 rounded-full bg-white p-1 ring-1 ring-[#cfe3c0]">
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="inline-flex items-center gap-2 rounded-full border border-[#123222]/50 px-6 py-3 text-sm font-semibold text-[#123222] transition-colors hover:bg-[#123222]/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123222]"
+                >
+                  <Printer size={16} /> Print recipe
+                </button>
+              </div>
+
+              <div
+                className="mt-10 flex scroll-mt-28 items-center justify-between gap-3 border-b border-[#123222]/15 pb-3"
+              >
+                <h2 className="inline-flex items-center gap-2 font-display text-2xl text-[#123222]">
+                  <Users size={20} className="text-[#2f6a45]" />
+                  Ingredients
+                </h2>
+
+                <div className="inline-flex items-center gap-1 rounded-full bg-white p-1 ring-1 ring-[#cfe3c0] print:hidden">
                   <button
                     type="button"
                     onClick={() =>
                       setServings((s) => Math.max(1, s - 1))
                     }
                     disabled={servings <= 1}
+                    aria-label="Fewer servings"
                     className="grid size-8 place-items-center rounded-full text-[#123222] hover:bg-[#eaf3df] disabled:opacity-35"
                   >
                     <Minus size={15} />
@@ -570,6 +437,7 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
                       setServings((s) => Math.min(24, s + 1))
                     }
                     disabled={servings >= 24}
+                    aria-label="More servings"
                     className="grid size-8 place-items-center rounded-full text-[#123222] hover:bg-[#eaf3df] disabled:opacity-35"
                   >
                     <Plus size={15} />
@@ -611,7 +479,7 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
                 <>
                   <div
                     id="method"
-                    className="mt-12 flex scroll-mt-6 items-center justify-between gap-3 border-b border-[#123222]/15 pb-3"
+                    className="mt-12 flex scroll-mt-28 items-center justify-between gap-3 border-b border-[#123222]/15 pb-3"
                   >
                     <h2 className="inline-flex items-center gap-2 font-display text-2xl text-[#123222]">
                       <ListChecks size={20} className="text-[#2f6a45]" />
@@ -773,8 +641,6 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
             </span>
           )}
         </div>
-
-        <SiteFooter />
       </main>
     </SiteLayout>
   )

@@ -21,6 +21,8 @@ import { recipeSlug, recipes } from '@/lib/recipes'
 import type { Recipe } from '@/lib/recipes'
 import { useRecipeShelf } from '@/lib/useRecipeShelf'
 import { getSupabase } from "@/lib/supabase";
+import { flatIngredients, parseIngredients, parseSteps } from '@/lib/cleanRecipe'
+import type { IngredientGroup } from '@/lib/cleanRecipe'
 
 const GRAIN =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/></svg>\")"
@@ -145,34 +147,37 @@ export default function RecipeContent() {
       if (error || !data) {
         setSupabaseRecipe(null)
       } else {
-        const normalized: Recipe = {
+        const lines = (data.ingredients ?? []).map(
+          (
+            ingredient:
+              | string
+              | {
+                  name: string
+                  amount?: number | string
+                  unit?: string
+                },
+          ) => {
+            if (typeof ingredient === 'string') {
+              return ingredient
+            }
+
+            return [ingredient.amount, ingredient.unit, ingredient.name]
+              .filter(Boolean)
+              .join(' ')
+          },
+        )
+
+        /* drops junk lines, turns "Cake:" style lines into section names */
+        const { groups } = parseIngredients(lines, data.title)
+
+        const normalized = {
           ...data,
           image: data.image_url,
-          ingredients: (data.ingredients ?? []).map(
-            (
-              ingredient:
-                | string
-                | {
-                    name: string
-                    amount?: number | string
-                    unit?: string
-                  },
-            ) => {
-              if (typeof ingredient === 'string') {
-                return ingredient
-              }
-
-              return [
-                ingredient.amount,
-                ingredient.unit,
-                ingredient.name,
-              ]
-                .filter(Boolean)
-                .join(' ')
-            },
-          ),
-          steps: data.steps ?? [],
-        }
+          ingredients: flatIngredients(groups),
+          ingredientGroups: groups,
+          /* one pasted paragraph becomes separate steps */
+          steps: parseSteps(data.steps),
+        } as Recipe
 
         setSupabaseRecipe(normalized)
       }
@@ -244,6 +249,11 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
     'instructions',
     'directions',
   ])
+
+  /* ingredient sections (Cake / Syrup / Cream ...) when the recipe has them */
+  const groups = (recipe as unknown as { ingredientGroups?: IngredientGroup[] })
+    .ingredientGroups
+  const sections = groups && groups.some((g) => g.title) ? groups : null
 
   const tip = pickText(recipe, ['tip', 'tips', 'note'])
   const factor = servings / baseServings
@@ -445,35 +455,50 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
                 </div>
               </div>
 
-              <ul className="mt-5 space-y-3">
-                {recipe.ingredients.map((line: string, i: number) => {
-                  const { qty, name } = splitLine(
-                    scaleLine(line, factor),
-                  )
+              {(sections ?? [{ title: '', items: recipe.ingredients }]).map(
+                (group, gi) => (
+                  <div
+                    key={`${group.title}-${gi}`}
+                    className={gi === 0 ? 'mt-5' : 'mt-8'}
+                  >
+                    {group.title && (
+                      <h3 className="mb-3 font-display text-lg text-[#2f6a45]">
+                        {group.title}
+                      </h3>
+                    )}
 
-                  return (
-                    <li
-                      key={`${line}-${i}`}
-                      className="flex items-baseline gap-2 text-sm text-[#123222]"
-                    >
-                      <span className="size-1.5 shrink-0 -translate-y-0.5 rounded-full bg-[#2f6a45]" />
-                      <span>{name}</span>
+                    <ul className="space-y-3">
+                      {group.items.map((line: string, i: number) => {
+                        const { qty, name } = splitLine(
+                          scaleLine(line, factor),
+                        )
 
-                      {qty && (
-                        <>
-                          <span
-                            aria-hidden="true"
-                            className="min-w-4 flex-1 border-b border-dotted border-[#123222]/35"
-                          />
-                          <span className="whitespace-nowrap font-semibold">
-                            {qty}
-                          </span>
-                        </>
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
+                        return (
+                          <li
+                            key={`${line}-${i}`}
+                            className="flex items-baseline gap-2 text-sm text-[#123222]"
+                          >
+                            <span className="size-1.5 shrink-0 -translate-y-0.5 rounded-full bg-[#2f6a45]" />
+                            <span>{name}</span>
+
+                            {qty && (
+                              <>
+                                <span
+                                  aria-hidden="true"
+                                  className="min-w-4 flex-1 border-b border-dotted border-[#123222]/35"
+                                />
+                                <span className="whitespace-nowrap font-semibold">
+                                  {qty}
+                                </span>
+                              </>
+                            )}
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                ),
+              )}
 
               {steps.length > 0 && (
                 <>

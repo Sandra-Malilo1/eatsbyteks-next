@@ -21,6 +21,8 @@ const CARD_SIZES = '(max-width: 640px) 75vw, (max-width: 1024px) 33vw, 400px'
 const CARD =
   'block border border-[#1f4d3a]/10 bg-white p-3 transition-shadow hover:shadow-[0_16px_36px_-24px_rgba(31,77,58,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e6a4f]'
 
+const VIEW_ALL =
+  'inline-flex items-center gap-2 text-sm font-semibold text-[#2e6a4f] underline-offset-4 transition-colors hover:text-[#245c43] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e6a4f] focus-visible:ring-offset-2'
 
 const CAROUSEL =
   '-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-3 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-8 sm:overflow-visible sm:px-0 sm:pb-0'
@@ -256,55 +258,6 @@ function DishRow({
 }
 
 /* ------------------------------------------------------------------ */
-/* Cookie consent: asked on every visit / page load                    */
-/* ------------------------------------------------------------------ */
-
-function CookieBanner() {
-  const [visible, setVisible] = useState(true)
-
-  if (!visible) return null
-
-  return (
-    <div
-      role="dialog"
-      aria-live="polite"
-      aria-label="Cookie consent"
-      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto max-h-[70vh] max-w-3xl overflow-y-auto rounded-2xl bg-white p-4 shadow-[0_20px_50px_-15px_rgba(31,77,58,0.55)] ring-1 ring-[#2e6a4f]/15 sm:inset-x-6 sm:bottom-4 sm:p-6"
-    >
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
-        <div>
-          <p className="font-display text-lg text-[#1f4d3a]">
-            Do you want to accept cookies?
-          </p>
-          <p className="mt-1 text-xs leading-relaxed text-[#1f4d3a]/70 sm:text-sm">
-            We use cookies to keep the site working, remember your saved
-            recipes and understand how people use EatsByTeks. You can accept or
-            decline non-essential cookies.
-          </p>
-        </div>
-        <div className="grid shrink-0 grid-cols-2 gap-3 sm:flex">
-          <Button
-            type="button"
-            variant="outline"
-            className="rounded-md border-[#2e6a4f] bg-transparent text-[#1f4d3a] hover:bg-[#e3f0e8]"
-            onClick={() => setVisible(false)}
-          >
-            Decline
-          </Button>
-          <Button
-            type="button"
-            className="rounded-md bg-[#16a05d] px-6 text-white hover:bg-[#12894f]"
-            onClick={() => setVisible(false)}
-          >
-            Accept
-          </Button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/* ------------------------------------------------------------------ */
 /* Page                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -314,6 +267,8 @@ export function HomePage() {
 
   const featured = pick(0)
   const closing = pick(2)
+  const heroRecipe = trending[0] ?? pick(1)
+
   const visible =
     filter === 'All'
       ? homeRecipes
@@ -329,48 +284,55 @@ export function HomePage() {
   return (
     <SiteLayout>
       <main className="overflow-x-hidden">
-        {/* HERO: text only, one centred block on the original green */}
+        {/* HERO: light mint, copy on the left, one simple photo on the right */}
         <section
-          className="relative isolate overflow-hidden bg-[#2e6a4f]"
+          className="bg-[linear-gradient(180deg,#dcefe2_0%,#e8f3e6_55%,#f3f8f4_100%)]"
           aria-labelledby="hero-heading"
         >
-          {/* soft translucent panels, exactly as before */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -z-10 right-[8%] top-0 h-full w-[34%] bg-white/[0.045]"
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -z-10 bottom-0 left-[40%] h-[42%] w-[22%] bg-black/[0.06]"
-          />
+          <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-14 sm:py-20 lg:min-h-[calc(90svh-76px)] lg:grid-cols-12 lg:gap-12 lg:px-8 lg:py-20">
+            {/* LEFT: copy (unchanged text) */}
+            <div className="text-center lg:col-span-6 lg:text-left">
+              <h1
+                id="hero-heading"
+                className="text-balance font-display text-[2.4rem] leading-[1.1] text-[#1f4d3a] min-[380px]:text-[2.75rem] sm:text-6xl sm:leading-[1.15] lg:text-[3.4rem] xl:text-6xl"
+              >
+                A little inspiration for your{' '}
+                <span className="text-[#16a05d]">everyday table.</span>
+              </h1>
 
-          <div className="relative mx-auto flex min-h-[calc(100vh-76px)] supports-[height:100svh]:min-h-[calc(100svh-76px)] max-w-4xl flex-col items-center justify-center px-5 pb-16 pt-12 text-center sm:min-h-[88vh] sm:supports-[height:100svh]:min-h-[88svh] sm:pb-24 sm:pt-28 lg:pt-32">
-            {/* small ornament (line only) */}
-            <div aria-hidden="true" className="flex items-center">
-              <span className="h-px w-28 bg-white/35" />
+              <p className="mx-auto mt-6 max-w-[34ch] text-[0.95rem] leading-relaxed text-[#1f4d3a]/75 min-[480px]:max-w-md sm:mt-8 sm:text-lg lg:mx-0">
+                From comforting family dinners to bold, flavour packed dishes and something sweet. Discover recipes
+                that make cooking at home feel exciting, simple and full of flavour, one recipe at a time.
+              </p>
+
+              <div className="mt-8 flex w-full max-w-xs justify-center sm:mt-10 sm:w-auto sm:max-w-none lg:justify-start">
+                <Button
+                  asChild
+                  size="lg"
+                  className="h-12 w-full rounded-full bg-[#2e6a4f] px-8 text-base text-white hover:bg-[#245c43] sm:w-auto"
+                >
+                  <Link href="/recipes">Explore Recipes</Link>
+                </Button>
+              </div>
             </div>
 
-            <h1
-              id="hero-heading"
-              className="mt-6 text-balance font-display text-[2.4rem] leading-[1.1] text-white min-[380px]:text-[2.75rem] sm:mt-8 sm:text-6xl sm:leading-[1.15] xl:text-7xl"
-            >
-              A little inspiration for your{' '}
-              <span className="text-[#bfe9d0]">everyday table.</span>
-            </h1>
-
-            <p className="mx-auto mt-5 max-w-[34ch] text-[0.95rem] leading-relaxed text-white/80 min-[480px]:max-w-md sm:mt-8 sm:max-w-2xl sm:text-lg">
-              From comforting family dinners to bold, flavour packed dishes and something sweet. Discover recipes
-              that make cooking at home feel exciting, simple and full of flavour, one recipe at a time.
-            </p>
-
-            <div className="mt-8 flex w-full max-w-xs justify-center sm:mt-10 sm:w-auto sm:max-w-none">
-              <Button
-                asChild
-                size="lg"
-                className="h-12 w-full rounded-md bg-[#16a05d] px-8 text-base text-white hover:bg-[#12894f] sm:w-auto"
+            {/* RIGHT: one clean photo */}
+            <div className="lg:col-span-6">
+              <Link
+                href={`/recipe/${recipeSlug(heroRecipe)}`}
+                aria-label={`Open recipe: ${heroRecipe.title}`}
+                className="group relative mx-auto block aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] bg-white shadow-[0_30px_60px_-34px_rgba(31,77,58,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e6a4f] sm:max-w-md lg:ml-auto lg:mr-0"
               >
-                <Link href="/recipes">Explore Recipes</Link>
-              </Button>
+                <Image
+                  src={heroRecipe.image}
+                  alt={heroRecipe.title}
+                  fill
+                  priority
+                  quality={90}
+                  sizes="(max-width: 640px) 90vw, 448px"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </Link>
             </div>
           </div>
         </section>
@@ -390,10 +352,7 @@ export function HomePage() {
                   Our most popular recipes of this week
                 </p>
               </div>
-              <Link
-                href="/recipes"
-                className="inline-flex items-center gap-2 rounded-full bg-[#2e6a4f] px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#245c43] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e6a4f] focus-visible:ring-offset-2"
-              >
+              <Link href="/recipes" className={VIEW_ALL}>
                 View all <ArrowRight size={16} />
               </Link>
             </div>
@@ -798,10 +757,7 @@ export function HomePage() {
               >
                 What everyone's making
               </h2>
-              <Link
-                href="/recipes"
-                className="inline-flex items-center gap-2 rounded-full bg-[#2e6a4f] px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#245c43] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e6a4f] focus-visible:ring-offset-2"
-              >
+              <Link href="/recipes" className={VIEW_ALL}>
                 View all <ArrowRight size={16} />
               </Link>
             </div>
@@ -838,8 +794,6 @@ export function HomePage() {
           </div>
         </section>
       </main>
-
-      <CookieBanner />
 
       <RecipeDialog
         recipe={selected}

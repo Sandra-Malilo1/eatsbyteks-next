@@ -25,6 +25,7 @@ import {
 import type { Recipe } from '@/lib/recipes'
 import { getSupabase } from "@/lib/supabase";
 import { useRecipeShelf } from '@/lib/useRecipeShelf'
+import { flatIngredients, parseIngredients, parseSteps } from '@/lib/cleanRecipe'
 
 type DbRecipe = {
   id: number
@@ -34,7 +35,7 @@ type DbRecipe = {
   time_label: string
   description: string
   image_url: string
-  ingredients: { name: string; amount?: number | string; unit?: string }[]
+  ingredients: (string | { name: string; amount?: number | string; unit?: string })[]
   steps: string[]
   is_kenyan: boolean
   published: boolean
@@ -66,22 +67,44 @@ const TILE_SPANS = [
 const minutes = (time: string) =>
   /hr/.test(time) ? 999 : parseInt(time, 10) || 999
 
+/* Short teaser from a long description (the full post stays in the database
+   and on the recipe page). Cuts at a sentence end when possible. */
+const excerpt = (text: string, max = 180) => {
+  const clean = (text ?? '').replace(/\s+/g, ' ').trim()
+  if (clean.length <= max) return clean
+  const cut = clean.slice(0, max)
+  const end = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '))
+  if (end > 60) return cut.slice(0, end + 1)
+  return cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:\-–—]$/, '') + '…'
+}
+
 function mapSupabaseRecipe(row: DbRecipe): Recipe {
+  const lines = (row.ingredients ?? []).map((ingredient) => {
+    if (typeof ingredient === 'string') return ingredient
+    const amount = ingredient.amount ? ` — ${ingredient.amount}` : ''
+    const unit = ingredient.unit ? ` ${ingredient.unit}` : ''
+    return `${ingredient.name}${amount}${unit}`
+  })
+
+  /* drops junk lines, turns "Cake:" style lines into section names */
+  const { groups } = parseIngredients(lines, row.title)
+  const steps = parseSteps(row.steps)
+
   return {
     id: row.id,
     slug: row.slug,
     title: row.title,
     category: row.category,
     time: row.time_label,
-    description: row.description,
+    description: excerpt(row.description),
     image: row.image_url,
-    ingredients: (row.ingredients ?? []).map((ingredient) => {
-      const amount = ingredient.amount ? ` — ${ingredient.amount}` : ''
-      const unit = ingredient.unit ? ` ${ingredient.unit}` : ''
-      return `${ingredient.name}${amount}${unit}`
-    }),
-    method: (row.steps ?? []).join('\n'),
-  }
+    ingredients: flatIngredients(groups),
+    /* one pasted paragraph becomes separate steps */
+    method: steps.join('\n'),
+    /* extra fields the quick view uses to show sections and numbered steps */
+    ingredientGroups: groups,
+    steps,
+  } as Recipe
 }
 
 function Reveal({
@@ -265,27 +288,8 @@ function RecipesContent() {
   const countFor = (value: string) =>
     recipes.filter((recipe: Recipe) => recipe.category === value).length
 
-  const activeTile = categoryTiles.find(
-    (tile) => tile.category === category,
-  )
-
   const featured: Recipe | undefined =
     recipes.find((recipe: Recipe) => recipe.id === 18) ?? recipes[0]
-
-  const heroPool: Recipe[] = inCategory
-    ? recipes.filter((recipe: Recipe) => recipe.category === category)
-    : []
-
-  const heroA: Recipe | undefined = heroPool[0] ?? featured
-  const heroB: Recipe | undefined =
-    heroPool[1] ??
-    recipes.find((recipe: Recipe) => recipe.id === 27) ??
-    recipes[1] ??
-    recipes[0]
-  const heroC: Recipe | undefined =
-    heroPool[2] ??
-    recipes.find((recipe: Recipe) => recipe.id !== heroA?.id && recipe.id !== heroB?.id) ??
-    recipes[2]
 
   const quick = recipes
     .filter((recipe: Recipe) => minutes(recipe.time) <= 30)
@@ -389,249 +393,85 @@ function RecipesContent() {
           </section>
         )}
 
+        {/* HEADER: heading, line, then search + filters in one panel (no hero, no images) */}
         <section
-          className="relative overflow-hidden bg-[#123222] text-[#f6f1c4]"
+          className="mx-auto max-w-7xl px-5 pb-6 pt-12 sm:pt-16 lg:px-8"
           aria-labelledby="hero-heading"
         >
-          <div
-            aria-hidden="true"
-            className="eat-parallax pointer-events-none absolute -inset-x-10 -top-10 bottom-0 bg-[radial-gradient(circle_at_85%_15%,#2f6a45_0%,transparent_50%),radial-gradient(circle_at_5%_90%,#1d4a31_0%,transparent_45%)]"
-            style={{
-              transform: 'translate3d(0, calc(var(--sy) * 0.1px), 0)',
-            }}
-          />
-
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0"
-            style={{
-              backgroundImage:
-                'radial-gradient(rgba(246,241,196,0.14) 1.2px, transparent 1.6px)',
-              backgroundSize: '24px 24px',
-              WebkitMaskImage:
-                'radial-gradient(ellipse at 20% 30%, #000 0%, transparent 60%)',
-              maskImage:
-                'radial-gradient(ellipse at 20% 30%, #000 0%, transparent 60%)',
-            }}
-          />
-
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute right-[4%] top-[42%] hidden size-[30rem] -translate-y-1/2 rounded-full bg-[#2f6a45]/40 blur-3xl lg:block"
-          />
-
-          <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-24 pt-14 sm:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:px-8 lg:pb-28 lg:pt-24">
-            <div
-              className="eat-parallax"
-              style={{
-                transform: 'translate3d(0, calc(var(--sy) * 0.1px), 0)',
-                opacity: 'max(0.2, calc(1 - var(--sy) / 650))',
-              }}
+          {inCategory && (
+            <Link
+              href="/recipes"
+              className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-[#2f6a45] hover:underline"
             >
-              {inCategory && (
-                <Link
-                  href="/recipes"
-                  className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-[#bfe0b4] hover:underline"
-                >
-                  <ArrowLeft size={16} /> All categories
-                </Link>
-              )}
+              <ArrowLeft size={16} /> All categories
+            </Link>
+          )}
 
-              <p className="eat-rise inline-flex items-center gap-2.5 rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold text-[#bfe0b4] ring-1 ring-white/15">
-                <span className="size-2 rounded-full bg-[#bfe0b4]" />
-                {inCategory
-                  ? activeTile?.sub ?? 'EatsByTeks recipes'
-                  : 'EatsByTeks recipe index'}
-              </p>
-
-              <h1
-                id="hero-heading"
-                className="eat-rise eat-rise-2 mt-6 font-display text-5xl leading-[1.02] text-[#fbf8dc] sm:text-6xl xl:text-7xl"
-              >
-                {inCategory ? (
-                  category
-                ) : (
-                  <>
-                    Cook something
-                    <span className="relative mt-1 block w-fit italic text-[#f6f1c4]">
-                      worth sharing
-                      <svg
-                        viewBox="0 0 300 14"
-                        preserveAspectRatio="none"
-                        className="absolute -bottom-2 left-0 h-3 w-full"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M2 9 C60 2 120 13 180 6 C230 1 270 9 298 5"
-                          stroke="#8fb88a"
-                          strokeWidth="3.5"
-                          fill="none"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </span>
-                  </>
-                )}
-              </h1>
-
-              <p className="eat-rise eat-rise-3 mt-8 max-w-md border-l-2 border-[#8fb88a]/60 pl-4 text-base leading-relaxed text-[#d4e8cc] sm:text-lg">
-                {inCategory
-                  ? 'Pick a meal to see its full recipe, ingredients and method.'
-                  : 'Search by dish or by what is in your kitchen, then cook it step by step.'}
-              </p>
-
-              <div className="eat-rise eat-rise-3 mt-9 max-w-xl rounded-[1.75rem] bg-white p-2 shadow-[0_28px_60px_-20px_rgba(0,0,0,0.65)] ring-4 ring-white/10 transition-shadow focus-within:ring-[#8fb88a]/50">
-                <form onSubmit={jumpToBrowse} className="flex items-center">
-                  <label className="relative flex flex-1 items-center">
-                    <Search className="pointer-events-none absolute left-4 size-4 text-[#2f6a45]" />
-
-                    <input
-                      value={query}
-                      onChange={(event) => setQuery(event.target.value)}
-                      type="search"
-                      placeholder="Try garlic, basil or chicken"
-                      aria-label="Search recipes or ingredients"
-                      className="h-12 w-full rounded-full bg-transparent pr-3 text-sm text-[#123222] outline-none placeholder:text-[#123222]/45"
-                      style={{ paddingLeft: '2.75rem' }}
+          <h1
+            id="hero-heading"
+            className="eat-rise font-display text-5xl leading-[1.02] text-[#123222] sm:text-6xl xl:text-7xl"
+          >
+            {inCategory ? (
+              category
+            ) : (
+              <>
+                Cook something
+                <span className="relative mt-1 block w-fit italic text-[#2f6a45]">
+                  worth sharing
+                  <svg
+                    viewBox="0 0 300 14"
+                    preserveAspectRatio="none"
+                    className="absolute -bottom-2 left-0 h-3 w-full"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M2 9 C60 2 120 13 180 6 C230 1 270 9 298 5"
+                      stroke="#8fb88a"
+                      strokeWidth="3.5"
+                      fill="none"
+                      strokeLinecap="round"
                     />
-                  </label>
+                  </svg>
+                </span>
+              </>
+            )}
+          </h1>
 
-                  <button type="submit" className={`${primaryBtn} h-12 px-6`}>
-                    Find recipes
-                  </button>
-                </form>
+          <p className="eat-rise eat-rise-2 mt-8 max-w-md border-l-2 border-[#8fb88a] pl-4 text-base leading-relaxed text-[#123222]/70 sm:text-lg">
+            {inCategory
+              ? 'Pick a meal to see its full recipe, ingredients and method.'
+              : 'Search by dish or by what is in your kitchen, then cook it step by step.'}
+          </p>
 
-                <div className="mt-2 flex flex-wrap items-center gap-2 rounded-2xl bg-[#eaf3df] px-4 py-3">
-                  <span className="mr-1 text-xs font-semibold text-[#2f6a45]">
-                    Popular
-                  </span>
+          <div className="eat-rise eat-rise-3 mt-10 rounded-[2rem] bg-white p-5 shadow-[0_30px_60px_-35px_rgba(18,50,34,0.45)] ring-1 ring-[#cfe3c0] sm:p-6">
+            {/* search */}
+            <form
+              onSubmit={jumpToBrowse}
+              role="search"
+              className="flex items-center rounded-full bg-[#eaf3df] p-1.5 transition-shadow focus-within:ring-2 focus-within:ring-[#2f6a45]/40"
+            >
+              <label className="relative flex flex-1 items-center">
+                <Search className="pointer-events-none absolute left-4 size-4 text-[#2f6a45]" />
 
-                  {popularIngredients
-                    .slice(0, 6)
-                    .map((ingredient: string) => {
-                      const on = terms.includes(ingredient.toLowerCase())
+                <input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  type="search"
+                  placeholder="Try garlic, basil or chicken"
+                  aria-label="Search recipes or ingredients"
+                  className="h-11 w-full rounded-full bg-transparent pr-3 text-sm text-[#123222] outline-none placeholder:text-[#123222]/45"
+                  style={{ paddingLeft: '2.75rem' }}
+                />
+              </label>
 
-                      return (
-                        <button
-                          key={ingredient}
-                          type="button"
-                          aria-pressed={on}
-                          onClick={() => toggleTerm(ingredient)}
-                          className={`rounded-full border px-3.5 py-1 text-xs font-semibold transition-colors ${
-                            on
-                              ? 'border-[#123222] bg-[#123222] text-[#f6f1c4]'
-                              : 'border-[#bcd7aa] bg-white text-[#123222] hover:border-[#2f6a45]'
-                          }`}
-                        >
-                          {ingredient}
-                        </button>
-                      )
-                    })}
-                </div>
-              </div>
+              <button type="submit" className={`${primaryBtn} h-11 px-6`}>
+                Find recipes
+              </button>
+            </form>
 
-              <p className="mt-3 max-w-xl px-2 text-xs text-[#bfe0b4]/80">
-                Pick one ingredient, or type several separated by commas.
-              </p>
-
-              <div className="eat-rise eat-rise-3 mt-9 max-w-xl">
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#bfe0b4]">
-                    Jump to
-                  </span>
-                  <span className="h-px flex-1 bg-white/15" />
-                </div>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {categories.slice(1).map((value: string) => {
-                    const on = value === category
-
-                    return (
-                      <button
-                        key={value}
-                        type="button"
-                        aria-pressed={on}
-                        onClick={() => {
-                          setOnlySaved(false)
-                          goToCategory(value)
-                        }}
-                        className={`inline-flex items-center gap-2 rounded-full py-2 pl-4 pr-2.5 text-xs font-semibold transition-colors ${
-                          on
-                            ? 'bg-[#f6f1c4] text-[#123222]'
-                            : 'bg-white/10 text-[#f6f1c4] ring-1 ring-white/15 hover:bg-white/20'
-                        }`}
-                      >
-                        {value}
-                        <span
-                          className={`grid min-w-5 place-items-center rounded-full px-1.5 py-0.5 text-[0.65rem] ${
-                            on ? 'bg-[#123222]/10' : 'bg-white/15'
-                          }`}
-                        >
-                          {countFor(value)}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="relative mx-auto w-full max-w-lg lg:ml-auto lg:mr-0">
-              <div className="grid grid-cols-3 items-end gap-3 sm:gap-4">
-                {[
-                  { recipe: heroB, shape: 'aspect-[3/4]', offset: 'mb-10', rise: 'eat-rise-2' },
-                  { recipe: heroA, shape: 'aspect-[3/5]', offset: '', rise: '' },
-                  { recipe: heroC, shape: 'aspect-[3/4]', offset: 'mb-20', rise: 'eat-rise-3' },
-                ].map(
-                  (item, index) =>
-                    item.recipe && (
-                      <Link
-                        key={`${item.recipe.id}-${index}`}
-                        href={`/recipe/${recipeSlug(item.recipe)}`}
-                        className={`eat-rise ${item.rise} ${item.offset} group block`}
-                      >
-                        <div
-                          className={`relative ${item.shape} overflow-hidden rounded-t-full rounded-b-2xl bg-[#d7e9c8] shadow-[0_40px_70px_-30px_rgba(0,0,0,0.7)] ring-4 ring-white`}
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={item.recipe.image}
-                            alt={item.recipe.title}
-                            className="size-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          />
-                        </div>
-                      </Link>
-                    ),
-                )}
-              </div>
-
-              {heroA && (
-                <div className="eat-rise eat-rise-3 absolute -bottom-6 left-1/2 z-20 w-[16rem] max-w-[90%] -translate-x-1/2 rounded-2xl bg-white px-5 py-4 text-[#123222] shadow-xl">
-                  <p className="text-[0.65rem] font-semibold uppercase tracking-wider text-[#2f6a45]">
-                    {inCategory ? `Fresh in ${category}` : 'Cook this now'}
-                  </p>
-
-                  <p className="mt-1 text-sm font-semibold leading-snug">
-                    {heroA.title}
-                  </p>
-
-                  <p className="mt-1.5 inline-flex items-center gap-1.5 text-xs text-[#123222]/60">
-                    <Clock3 size={13} className="text-[#2f6a45]" />
-                    {heroA.time}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="browse"
-          className="relative mx-auto -mt-2 max-w-7xl scroll-mt-24 px-5 lg:px-8"
-        >
-          <div className="rounded-[2rem] bg-white p-5 shadow-[0_30px_60px_-35px_rgba(18,50,34,0.45)] ring-1 ring-[#cfe3c0] sm:p-6">
+            {/* categories + saved */}
             <div
-              className="flex flex-wrap items-center gap-2"
+              className="mt-5 flex flex-wrap items-center gap-2"
               role="tablist"
               aria-label="Categories"
             >
@@ -673,6 +513,7 @@ function RecipesContent() {
               </button>
             </div>
 
+            {/* ingredient filter */}
             <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-[#e1eed5] pt-4">
               <span className="mr-1 text-sm font-medium text-[#123222]/60">
                 In your kitchen:
@@ -701,7 +542,10 @@ function RecipesContent() {
           </div>
         </section>
 
-        <section className="relative mx-auto max-w-7xl px-5 pb-12 pt-12 sm:pt-16 lg:px-8">
+        <section
+          id="browse"
+          className="relative mx-auto max-w-7xl scroll-mt-24 px-5 pb-12 pt-8 sm:pt-12 lg:px-8"
+        >
           {showCategories ? (
             <>
               <Reveal>

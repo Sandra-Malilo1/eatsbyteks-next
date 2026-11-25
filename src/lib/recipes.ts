@@ -4,24 +4,28 @@ export type Recipe = {
   id: number
   slug?: string
   title: string
-  category: 'Breakfast' | 'Lunch' | 'Dinner' | 'Dessert' |  'Baked Goods'
+  category: 'Breakfast' | 'Lunch' | 'Dinner' | 'Dessert' |  'Baked Goods' |'Salad'
   time: string
   image: string
   description: string
   ingredients: string[]
   method: string
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export const recipes: Recipe[] = [
 
   {
     id: 7,
-    title: "Green goddess pasta with tomatoes",
+    title: "Green Goddess Pasta with Tomatoes Recipe | EatsByTeks",
+    seoTitle: "Green Goddess Pasta with Tomatoes - EatsByTeks",
+    seoDescription: "Learn how to make this bright, herby pasta with juicy tomatoes and parmesan.",
     category: "Lunch",
     time: "25 min",
     image: A("pesto-fusilli.jpeg"),
     description:
-      "A bright, herby pasta with juicy tomatoes, greens and a shower of parmesan.",
+      "A bright, herby pasta with cherry tomatoes, spinach, basil and parmesan. A quick lunch recipe with step-by-step instructions",
     ingredients: [
       "Fusilli pasta",
       "Cherry tomatoes",
@@ -36,12 +40,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 8,
-    title: "Chimichurri steak & parmesan fries",
+    title: "Chimichurri Steak and Parmesan Fries Recipe | EatsByTeks",
+    seoTitle: "Chimichurri Steak and Parmesan Fries - EatsByTeks",
+    seoDescription: "Learn how to make this delicious steak and fries dish with a punchy green herb sauce.",
     category: "Dinner",
     time: "45 min",
     image: A("steak-fries.jpeg"),
     description:
-      "Seared steak, golden fries and a punchy green herb sauce for a proper dinner.",
+      "Seared steak with homemade chimichurri and crispy oven-roasted parmesan fries. A simple dinner recipe with clear steps.",
     ingredients: [
       "Steak",
       "Potatoes",
@@ -56,12 +62,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 9,
-    title: "Glazed chicken with sweet potato mash",
+    title: "Glazed Chicken with Sweet Potato Mash Recipe | EatsByTeks",
+    seoTitle: "Glazed Chicken with Sweet Potato Mash - EatsByTeks",
+    seoDescription: "Learn how to make this juicy roasted chicken with silky sweet potato mash and tender green vegetables.",
     category: "Dinner",
     time: "40 min",
     image: A("roasted-chicken.jpeg"),
     description:
-      "Juicy roasted chicken with silky sweet potato mash and tender green vegetables.",
+      "Honey-glazed roast chicken with buttery sweet potato mash, carrots and green beans. A complete dinner recipe with step-by-step instructions.",
     ingredients: [
       "Chicken thighs",
       "Sweet potatoes",
@@ -76,12 +84,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 10,
-    title: "Crispy potatoes with herby dressing",
+    title: "Crispy Potatoes with Herby Dressing Recipe | EatsByTeks",
+    seoTitle: "Crispy Potatoes with Herby Dressing - EatsByTeks",
+    seoDescription: "Learn how to make these golden-edged potatoes with a lively, garlicky herb dressing.",
     category: "Lunch",
     time: "40 min",
     image: A("spiced-potatoes.jpeg"),
     description:
-      "Golden-edged potatoes tossed in a lively, garlicky herb dressing.",
+      "Crispy roasted baby potatoes tossed in a garlicky parsley, lemon and chilli dressing. An easy side or lunch recipe..",
     ingredients: [
       "Baby potatoes",
       "Flat-leaf parsley",
@@ -95,12 +105,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 11,
-    title: "Sticky beef & peppers rice bowl",
+    title: "Sticky Beef & Peppers Rice Bowl Recipe | EatsByTeks",
+    seoTitle: "Sticky Beef & Peppers Rice Bowl - EatsByTeks",
+    seoDescription: "Learn how to make this flavorful beef and pepper rice bowl with a sweet and savory glaze.",
     category: "Dinner",
     time: "30 min",
     image: A("sesame-beef-stirfry.jpeg"),
     description:
-      "Tender beef, colourful peppers and sesame over fluffy rice.",
+      "Quick beef stir-fry with red peppers and green beans, glazed with soy and honey and served over rice with sesame seeds. Ready in 30 minutes.",
     ingredients: [
       "Beef strips",
       "Rice",
@@ -115,12 +127,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 12,
-    title: "Warm date pudding with vanilla ice cream",
+    title: "Sticky Date Pudding with Vanilla Ice Cream Recipe | EatsByTeks",
+    seoTitle: "Sticky Date Pudding with Vanilla Ice Cream - EatsByTeks",
+    seoDescription: "Learn how to make this rich, sticky date pudding with a creamy vanilla ice cream topping.",
     category: "Dessert",
     time: "55 min",
     image: A("sticky-toffee-pudding.jpeg"),
     description:
-      "A soft, sticky little pudding with melting vanilla ice cream on top.",
+      "Soft, sticky date pudding baked in ramekins and served warm with vanilla ice cream. An easy dessert with step-by-step instructions.",
     ingredients: [
       "Pitted dates",
       "Plain flour",
@@ -135,12 +149,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 13,
-    title: "Creamy chicken with asparagus",
+    title: "Creamy Chicken with Asparagus Recipe | EatsByTeks",
+    seoTitle: "Creamy Chicken with Asparagus - EatsByTeks",
+    seoDescription: "Learn how to make this golden chicken in a savoury cream sauce with asparagus and buttery mash.",
     category: "Dinner",
     time: "35 min",
     image: A("seared-chicken-breast.jpeg"),
     description:
-      "Golden chicken in a savoury cream sauce with asparagus and buttery mash.",
+      "Seared chicken breasts in a creamy shallot and paprika sauce, served with asparagus and buttery mash. An easy chicken and asparagus dinner.",
     ingredients: [
       "Chicken breasts",
       "Asparagus",
@@ -155,12 +171,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 14,
-    title: "Creamy mushroom tagliatelle",
+    title: "Creamy Mushroom Tagliatelle Recipe | EatsByTeks",
+    seoTitle: "Creamy Mushroom Tagliatelle - EatsByTeks",
+    seoDescription: "Learn how to make this creamy mushroom tagliatelle with a rich, velvety sauce.",
     category: "Dinner",
     time: "30 min",
     image: A("mushroom.jpeg"),
     description:
-      "Silky ribbons of pasta with golden mushrooms and plenty of parmesan.",
+      "Tagliatelle with golden mushrooms, garlic, thyme and parmesan in a silky cream sauce. A quick dinner ready in 30 minutes.",
     ingredients: [
       "Tagliatelle",
       "Mushrooms",
@@ -174,12 +192,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 1,
-    title: "The really good homemade burger",
+    title: "Homemade Cheeseburger Recipe with Burger Sauce | EatsByTeks",
+    seoTitle: "Homemade Cheeseburger Recipe with Burger Sauce - EatsByTeks",
+    seoDescription: "Learn how to make this juicy, feel-good cheeseburger with a delicious homemade burger sauce.",
     category: "Dinner",
     time: "35 min",
     image: A("hero-burger.jpg"),
     description:
-      "A juicy, feel-good burger with all the little things that make it unforgettable.",
+      "A juicy homemade cheeseburger with melted cheddar, lettuce, tomato, red onion and burger sauce on toasted brioche buns.",
     ingredients: [
       "Brioche buns",
       "Ground beef",
@@ -193,12 +213,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 2,
-    title: "Creamy tomato & basil pasta",
+    title: "Creamy Tomato and Basil Pasta Recipe | EatsByTeks",
+    seoTitle: "Creamy Tomato and Basil Pasta - EatsByTeks",
+    seoDescription: "Learn how to make this creamy tomato and basil pasta with a rich, velvety sauce.",
     category: "Dinner",
     time: "25 min",
     image: A("spaghetti.jpeg"),
     description:
-      "A weeknight bowl of comfort, finished with parmesan and plenty of basil.",
+      "Penne with garlic, cherry tomatoes, cream, basil and parmesan. A simple weeknight pasta ready in about 25 minutes.",
     ingredients: [
       "Penne pasta",
       "Cherry tomatoes",
@@ -212,12 +234,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 3,
-    title: "Strawberry cloud cake",
+    title: "Strawberry Sponge Cake with Cream Recipe | EatsByTeks",
+    seoTitle: "Strawberry Sponge Cake with Cream - EatsByTeks",
+    seoDescription: "Learn how to make this moist and delicious strawberry sponge cake with a luscious cream filling.",
     category: "Dessert",
     time: "1 hr 15 min",
     image: A("recipe-cake.jpg"),
     description:
-      "Soft vanilla sponge, strawberry cream, and a little celebration in every slice.",
+      "Light vanilla sponge layered with whipped strawberry cream and fresh berries. A step-by-step strawberry cake recipe.",
     ingredients: [
       "Vanilla sponge",
       "Fresh strawberries",
@@ -230,12 +254,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 4,
-    title: "Green goddess chicken bowl",
+    title: "Green Goddess Chicken Bowl Recipe | EatsByTeks",
+    seoTitle: "Green Goddess Chicken Bowl - EatsByTeks",
+    seoDescription: "Learn how to make this fresh, filling chicken bowl with a generous amount of herby dressing.",
     category: "Baked Goods",
     time: "30 min",
     image: A("recipe-bowl.jpg"),
     description:
-      "Fresh, filling, colorful, and generously drizzled with herby dressing.",
+      "A filling bowl of chicken, grains, avocado and roasted vegetables with a fresh herb dressing. An easy lunch recipe.",
     ingredients: [
       "Chicken breast",
       "Grains",
@@ -249,12 +275,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 5,
-    title: "Slow Sunday burger",
+    title: "Beef Burger Recipe with Cheese and Fresh Toppings | EatsByTeks",
+    seoTitle: "Beef Burger Recipe with Cheese and Fresh Toppings - EatsByTeks",
+    seoDescription: "Learn how to make this juicy beef burger with melted cheese and fresh toppings.",
     category: "Lunch",
     time: "40 min",
     image: A("hero-burger.jpg"),
     description:
-      "The kind of laid-back lunch worth making a whole afternoon of.",
+      "A simple beef burger with melted cheese, tomatoes and lettuce on toasted brioche buns. An easy relaxed lunch.",
     ingredients: [
       "Brioche buns",
       "Beef patties",
@@ -267,24 +295,28 @@ export const recipes: Recipe[] = [
   },
   {
     id: 6,
-    title: "Sunday tomato pasta",
+    title: "Simple Tomato Pasta with Basil and Parmesan Recipe | EatsByTeks",
+    seoTitle: "Simple Tomato Pasta with Basil and Parmesan - EatsByTeks",
+    seoDescription: "Learn how to make this easy tomato pasta with garlic, basil and parmesan.",
     category: "Dinner",
     time: "30 min",
     image: A("recipe-pasta.jpg"),
     description:
-      "A simple table-sharing favorite with a sunny tomato sauce.",
+      "An easy tomato pasta with garlic, basil and parmesan, with a simple sauce that comes together in 30 minutes.",
     ingredients: ["Pasta", "Tomatoes", "Garlic", "Basil", "Parmesan"],
     method:
       "Cook pasta and simmer tomatoes with garlic. Toss together and finish with basil and parmesan.",
   },
   {
     id: 15,
-    title: "Fresh fruit salad bowl",
+    title: "Fresh Fruit Salad Recipe with Lime and Honey | EatsByTeks",
+    seoTitle: "Fresh Fruit Salad with Lime and Honey - EatsByTeks",
+    seoDescription: "Learn how to make this refreshing fruit salad with a zesty lime and honey dressing.",
     category: "Breakfast",
     time: "10 min",
     image: A("fuit-salad.jpeg"),
     description:
-      "A colourful bowl of seasonal fruit with a squeeze of lime and a little honey.",
+      "Seasonal fruit tossed with lime, honey and fresh mint, served with natural yoghurt. A quick breakfast ready in 10 minutes.",
     ingredients: [
       "Mixed seasonal fruit",
       "Lime",
@@ -297,12 +329,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 16,
-    title: "Spicy arrabbiata risotto",
+    title: "Spicy Arrabbiata Risotto Recipe | EatsByTeks",
+    seoTitle: "Spicy Arrabbiata Risotto - EatsByTeks",
+    seoDescription: "Learn how to make this creamy risotto with a fiery tomato sauce and fresh herbs.",
     category: "Dinner",
     time: "40 min",
     image: A("risotto.jpeg"),
     description:
-      "Creamy rice in a fiery tomato sauce, finished with parmesan, lemon zest and herbs.",
+      "Creamy risotto with passata, chilli flakes and parmesan, finished with lemon zest and parsley. A one-pot dinner recipe.",
     ingredients: [
       "Arborio rice",
       "Passata",
@@ -319,12 +353,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 17,
-    title: "Mango swiss roll",
+    title: "Mango Swiss Roll Recipe | EatsByTeks",
+    seoTitle: "Mango Swiss Roll - EatsByTeks",
+    seoDescription: "Learn how to make this light and airy swiss roll filled with fresh mango and cream.",
     category: "Dessert",
     time: "50 min",
     image: A("mango-swiss-roll.jpeg"),
     description:
-      "A feather-light sponge rolled around soft cream and a ribbon of fresh mango.",
+      "A light sponge rolled around whipped cream and fresh mango, then dusted with icing sugar. A step-by-step baking recipe.",
     ingredients: [
       "Eggs",
       "Caster sugar",
@@ -338,12 +374,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 18,
-    title: "Lamb chops in spicy tomato sauce with naan",
+    title: "Lamb Chops in Spicy Tomato Sauce with Naan | EatsByTeks",
+    seoTitle: "Lamb Chops in Spicy Tomato Sauce with Naan - EatsByTeks",
+    seoDescription: "Learn how to make this tender lamb chops in a rich, spicy tomato sauce, served with warm flatbread.",
     category: "Dinner",
     time: "50 min",
     image: A("lamb-chops.jpeg"),
     description:
-      "Tender lamb simmered in a rich, spicy tomato gravy, served with warm flatbread.",
+      "Tender lamb chops simmered in a spiced tomato gravy with ginger and garam masala, served with warm naan. A hearty dinner recipe.",
     ingredients: [
       "Lamb chops",
       "Tomatoes",
@@ -360,12 +398,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 19,
-    title: "Baked chicken with sweet potato mash and green beans",
+    title: "Baked Chicken with Sweet Potato Mash and Green Beans Recipe | EatsByTeks",
+    seoTitle: "Baked Chicken with Sweet Potato Mash and Green Beans - EatsByTeks",
+    seoDescription: "Learn how to make this easy baked chicken with sweet potato mash and green beans.",
     category: "Dinner",
     time: "45 min",
     image: A("baked-chicken.jpeg"),
     description:
-      "Roasted chicken over silky sweet potato mash with sautéed green beans and carrots.",
+      "Oven-baked garlic chicken with sweet potato mash, sautéed green beans and carrots. A complete dinner recipe with clear steps.",
     ingredients: [
       "Chicken portions",
       "Sweet potatoes",
@@ -380,12 +420,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 20,
-    title: "Chicken burrito bowl",
+    title: "Chicken Burrito Bowl Recipe | EatsByTeks",
+    seoTitle: "Chicken Burrito Bowl - EatsByTeks",
+    seoDescription: "Learn how to make this delicious chicken burrito bowl with black beans, rice and avocado.",
     category: "Lunch",
     time: "35 min",
     image: A("chicken-burrito-bowl.jpeg"),
     description:
-      "Seasoned chicken, black beans, rice and avocado with a creamy drizzle.",
+      "easoned chicken, rice, black beans, avocado and pico de gallo in a homemade burrito bowl with sour cream. An easy lunch recipe.",
     ingredients: [
       "Chicken breast",
       "White rice",
@@ -402,12 +444,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 21,
-    title: "Pan-seared fish with caramelized onion sauce",
+    title: "Pan-Seared Fish with Caramelised Onions Recipe | EatsByTeks",
+    seoTitle: "Pan-Seared Fish with Caramelised Onions - EatsByTeks",
+    seoDescription: "Learn how to make this delicious pan-seared fish with rich, sweet caramelized onions.",
     category: "Dinner",
     time: "30 min",
     image: A("caramelized-onion.jpeg"),
     description:
-      "Golden pan-seared white fish served with rich, sweet caramelized onions and tender green beans on the side.",
+      "Crispy pan-seared white fish with sweet caramelised onions, garlic and thyme, served with green beans. An easy fish dinner.",
     ingredients: [
       "White fish fillets",
       "Yellow onions",
@@ -424,8 +468,10 @@ export const recipes: Recipe[] = [
   },
   {
     id: 22,
-    title: "Rainbow crunch salad with peanut dressing",
-    category: "Baked Goods",
+    title: "Rainbow Crunch Salad Recipe | EatsByTeks",
+    seoTitle: "Rainbow Crunch Salad - EatsByTeks",
+    seoDescription: "Learn how to make this refreshing rainbow crunch salad with a creamy peanut dressing.",
+    category: "Dinner",
     time: "20 min",
     image: A("rainbow-crunch.jpeg"),
     description:
@@ -446,12 +492,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 23,
-    title: "Burnt Basque cheesecake",
+    title: "Burnt Basque Cheesecake Recipe | EatsByTeks",
+    seoTitle: "Burnt Basque Cheesecake - EatsByTeks",
+    seoDescription: "Learn how to make this decadent burnt basque cheesecake with a caramelised top and creamy centre.",
     category: "Dessert",
     time: "1 hr 10 min",
     image: A("burnt-basque-cheesecake.jpeg"),
     description:
-      "A crustless cheesecake with a deeply caramelised top and a creamy, custardy centre.",
+      "How to make a burnt Basque cheesecake with a deeply caramelised top and a creamy centre. Crustless and simple, with step-by-step instructions.",
     ingredients: [
       "Cream cheese",
       "Caster sugar",
@@ -465,12 +513,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 24,
-    title: "Tiramisu",
+    title: "Classic Tiramisu Recipe with Coffee and Mascarpone | EatsByTeks",
+    seoTitle: "Classic Tiramisu - EatsByTeks",
+    seoDescription: "Learn how to make this iconic Italian dessert with coffee and mascarpone.",
     category: "Dessert",
     time: "40 min",
     image: A("tiramisu.jpeg"),
     description:
-      "Coffee-soaked ladyfingers layered with whipped mascarpone and dusted with cocoa.",
+      "Coffee-soaked ladyfingers layered with whipped mascarpone and dusted with cocoa. A classic tiramisu with step-by-step instructions.",
     ingredients: [
       "Ladyfingers",
       "Mascarpone",
@@ -484,12 +534,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 25,
-    title: "Teriyaki salmon rice bowl",
+    title: "Teriyaki Salmon Rice Bowl Recipe | EatsByTeks",
+    seoTitle: "Teriyaki Salmon Rice Bowl - EatsByTeks",
+    seoDescription: "Learn how to make this delicious teriyaki salmon rice bowl with steamed rice and broccoli.",
     category: "Dinner",
     time: "30 min",
     image: A("teriyaki-salmon.jpeg"),
     description:
-      "Sweet and savoury glazed salmon over steamed rice with broccoli.",
+      "Salmon glazed in homemade teriyaki sauce, served over sushi rice with broccoli and sesame seeds. A 30-minute dinner recipe.",
     ingredients: [
       "Salmon fillets",
       "Sushi rice",
@@ -505,12 +557,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 26,
-    title: "Passionfruit loaf cake",
+    title: "Passionfruit Loaf Cake Recipe | EatsByTeks",
+    seoTitle: "Passionfruit Loaf Cake - EatsByTeks",
+    seoDescription: "Learn how to make this moist and tangy loaf cake with a passionfruit glaze and fresh seeds.",
     category: "Dessert",
     time: "1 hr",
     image: A("passionfruit-loaf-cake.jpeg"),
     description:
-      "A moist, tangy loaf topped with a passionfruit glaze and fresh seeds.",
+      "A moist passionfruit loaf cake made with yoghurt and finished with a tangy passionfruit glaze. An easy baking recipe.",
     ingredients: [
       "Plain flour",
       "Caster sugar",
@@ -526,12 +580,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 27,
-    title: "Kenyan pilau",
+    title: "Kenyan Beef Pilau Recipe with Kachumbari | EatsByTeks",
+    seoTitle: "Kenyan Beef Pilau with Kachumbari - EatsByTeks",
+    seoDescription: "Learn how to make this aromatic Kenyan beef pilau with tender meat and potatoes, served with fresh kachumbari.",
     category: "Dinner",
     time: "1 hr 15 min",
     image: A("kenyan-beef-pilau.jpeg"),
     description:
-      "Fragrant spiced rice with tender beef and potatoes, served with fresh kachumbari.",
+      "Fragrant pilau with spiced rice, tender beef and potatoes, served with fresh kachumbari. A one-pot Kenyan dinner recipe.",
     ingredients: [
       "Basmati rice",
       "Beef",
@@ -547,12 +603,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 28,
-    title: "Githeri with avocado and feta",
-    category: "Baked Goods",
+    title: "Githeri Salad with Avocado and Feta Recipe | EatsByTeks",
+    seoTitle: "Githeri with Avocado and Feta - EatsByTeks",
+    seoDescription: "Learn how to make this hearty Kenyan githeri salad with creamy avocado, crumbled feta, fresh tomatoes and red onion.",
+    category: "Lunch",
     time: "25 min",
     image: A("githeri.jpeg"),
     description:
-      "A hearty Kenyan githeri salad tossed with creamy avocado, crumbled feta, fresh tomatoes and red onion.",
+      "A Kenyan githeri salad with avocado, feta, cherry tomatoes and red onion in a lemon olive oil dressing. A filling, quick lunch.",
     ingredients: [
       "Githeri (maize and beans)",
       "Avocado",
@@ -568,12 +626,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 29,
-    title: "Creamy mushroom soup with ciabatta",
+    title: "Creamy Mushroom Soup with Ciabatta | EatsByTeks",
+    seoTitle: "Creamy Mushroom Soup with Ciabatta - EatsByTeks",
+    seoDescription: "Learn how to make this velvety blended mushroom soup with a slice of toasted ciabatta.",
     category: "Lunch",
     time: "35 min",
     image: A("creamy-mushroom-soup.jpeg"),
     description:
-      "A velvety blended mushroom soup with a slice of toasted ciabatta.",
+      "A velvety blended mushroom soup with thyme, garlic and cream, served with toasted ciabatta. An easy lunch recipe.",
     ingredients: [
       "Mushrooms",
       "Onion",
@@ -589,12 +649,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 30,
-    title: "Mango sticky rice",
+    title: "Thai Mango Sticky Rice Recipe with Coconut Milk | EatsByTeks",
+    seoTitle: "Mango Sticky Rice - EatsByTeks",
+    seoDescription: "Learn how to make this sweet and creamy mango sticky rice with fresh mango and toasted sesame seeds.",
     category: "Dessert",
     time: "45 min",
     image: A("mango-sticky-rice.jpeg"),
     description:
-      "Sweet coconut sticky rice with fresh mango and toasted sesame.",
+      "Sweet coconut sticky rice with ripe mango and toasted sesame seeds. A simple Thai-style dessert with step-by-step instructions.",
     ingredients: [
       "Glutinous rice",
       "Coconut milk",
@@ -608,12 +670,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 31,
-    title: "Ugali with goat fry and creamed greens",
+    title: "Ugali with Goat Fry and Creamed Greens | EatsByTeks",
+    seoTitle: "Ugali with Goat Fry and Creamed Greens - EatsByTeks",
+    seoDescription: "Learn how to make this traditional Kenyan dish with soft ugali, crispy goat fry and creamy sautéed greens.",
     category: "Dinner",
     time: "1 hr 15 min",
     image: A("dry-goat-fry.jpeg"),
     description:
-      "Soft ugali with fried goat meat and a side of creamy sautéed greens.",
+      "Soft Kenyan ugali served with fried goat meat, onions, tomatoes and creamy sautéed greens. A hearty dinner recipe.",
     ingredients: [
       "Maize flour",
       "Goat meat",
@@ -629,12 +693,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 32,
-    title: "Kenyan kaimati",
+    title: "Kenyan Kaimati | EatsByTeks",
+    seoTitle: "Kenyan Kaimati - EatsByTeks",
+    seoDescription: "Learn how to make this golden, crispy Swahili kaimati with soft, fluffy centres, coated in a sweet, sticky sugar syrup for a delicious coastal treat.",
     category: "Breakfast",
     time: "45 min",
     image: A("kaimati.jpeg"),
     description:
-      "Golden, crispy Swahili kaimati with soft, fluffy centres, coated in a sweet, sticky sugar syrup for a delicious coastal treat.",
+      "Golden, crispy kaimati made with yoghurt and cardamom, then tossed in sweet syrup. Step-by-step instructions for this Swahili coastal treat.",
     ingredients: [
       "All-purpose flour",
       "Plain yoghurt",
@@ -650,12 +716,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 33,
-    title: "Flan (crème caramel)",
+    title: "Flan (Crème Caramel) Recipe with Condensed Milk | EatsByTeks",
+    seoTitle: "Flan (Crème Caramel) - EatsByTeks",
+    seoDescription: "Learn how to make this silky custard crowned with a layer of soft caramel.",
     category: "Dessert",
     time: "1 hr 10 min",
     image: A("flan.jpeg"),
     description:
-      "A silky custard crowned with a layer of soft caramel.",
+      "A silky flan with a golden caramel layer, made with condensed and evaporated milk and vanilla. Chilled and turned out to serve.",
     ingredients: [
       "Caster sugar",
       "Eggs",
@@ -669,12 +737,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 34,
-    title: "Coconut fish curry",
+    title: "Coconut Fish Curry | EatsByTeks",
+    seoTitle: "Coconut Fish Curry - EatsByTeks",
+    seoDescription: "Learn how to make this creamy, gently spiced coconut and tomato fish curry with a hint of lime and fresh coriander.",
     category: "Dinner",
     time: "40 min",
     image: A("coconut-fish-curry.jpeg"),
     description:
-      "Tender white fish simmered in a creamy, gently spiced coconut and tomato sauce, finished with lime and fresh coriander.",
+      "Tender white fish simmered in a creamy coconut and tomato curry with ginger, garlic and lime. An easy fish curry with clear steps.",
     ingredients: [
       "White fish fillets",
       "Coconut milk",
@@ -693,12 +763,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 36,
-    title: "Carrot and apple spice cake",
+    title: "Carrot and Apple Cake Recipe with Cream Cheese Icing | EatsByTeks",
+    seoTitle: "Carrot and Apple Cake with Cream Cheese Icing - EatsByTeks",
+    seoDescription: "Learn how to make this moist, spiced cake with grated carrot and apple, topped with a thick cream cheese frosting.",
     category: "Dessert",
     time: "1 hr 10 min",
     image: A("carrot-and-apple-spice.jpeg"),
     description:
-      "A moist, spiced loaf with grated carrot and apple under thick cream cheese frosting.",
+      "A moist carrot and apple spice cake with mixed spice, topped with thick cream cheese frosting. An easy baking recipe.",
     ingredients: [
       "Carrots",
       "Apples",
@@ -715,12 +787,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 37,
-    title: "Pumpkin bread with cinnamon streusel",
+    title: "Pumpkin Bread with Cinnamon Streusel Recipe | EatsByTeks",
+    seoTitle: "Pumpkin Bread with Cinnamon Streusel - EatsByTeks",
+    seoDescription: "Learn how to make this moist pumpkin bread with a buttery cinnamon streusel and a sweet vanilla glaze.",
     category: "Dessert",
     time: "1 hr 15 min",
     image: A("pumpkin-bread.jpeg"),
     description:
-      "Moist pumpkin bread with a buttery streusel and a sweet vanilla glaze.",
+      "Moist pumpkin bread with a buttery cinnamon streusel topping and a sweet vanilla glaze. An easy loaf recipe.",
     ingredients: [
       "Pumpkin purée",
       "Plain flour",
@@ -736,12 +810,14 @@ export const recipes: Recipe[] = [
   },
   {
     id: 38,
-    title: "Chili con carne with rice and tortilla chips",
+    title: "Chilli Con Carne Recipe with Rice and Tortilla Chips | EatsByTeks",
+    seoTitle: "Chili con carne with rice and tortilla chips - EatsByTeks",
+    seoDescription: "Learn how to make this hearty spiced beef and bean stew with rice, chips and sour cream.",
     category: "Dinner",
     time: "1 hr",
     image: A("chili-con-carne.jpeg"),
     description:
-      "A hearty spiced beef and bean stew with rice, chips and sour cream.",
+      "A hearty beef and kidney bean chilli with tomatoes and garlic, served with rice, tortilla chips and sour cream. An easy dinner.",
     ingredients: [
       "Ground beef",
       "Kidney beans",
@@ -790,29 +866,12 @@ export const recipes: Recipe[] = [
     method:
       "Heat the cream and sugar, boil for three minutes, then stir in the lemon juice. Pour into hollowed lemon halves and chill until set, at least three hours.",
   },
-  {
-    id: 41,
-    title: "Mandazi",
-    category: "Breakfast",
-    time: "45 min",
-    image: A("mandazi.jpeg"),
-    description:
-      "Sweet, cardamom-scented fried dough triangles, perfect with a cup of tea.",
-    ingredients: [
-      "Plain flour",
-      "Sugar",
-      "Coconut milk",
-      "Ground cardamom",
-      "Baking powder",
-      "Egg",
-      "Vegetable oil",
-    ],
-    method:
-      "Mix the flour, sugar, cardamom and baking powder, then work in the egg and coconut milk to a soft dough. Rest for 20 minutes, roll out and cut into triangles. Fry in hot oil until puffed and golden and drain.",
-  },
+ 
   {
     id: 42,
-    title: "Salmon alla vodka",
+    title: "Salmon alla vodka| EatsByTeks",
+    seoTitle: "Salmon alla vodka - EatsByTeks",
+    seoDescription: "Learn how to make this delicious seared salmon with a creamy tomato vodka sauce, served with mash and broccoli.",
     category: "Dinner",
     time: "35 min",
     image: A("salmon-alla-vodka.jpeg"),
@@ -833,7 +892,9 @@ export const recipes: Recipe[] = [
   },
   {
     id: 43,
-    title: "Blueberry muffins",
+    title: "Blueberry Muffins Recipe | EatsByTeks",
+    seoTitle: "Blueberry Muffins - EatsByTeks",
+    seoDescription: "Learn how to make these soft and tender muffins studded with blueberries and topped with a crunchy sugar crust.",
     category: "Breakfast",
     time: "35 min",
     image: A("blueberry-muffins.jpeg"),
@@ -854,7 +915,9 @@ export const recipes: Recipe[] = [
   },
   {
     id: 44,
-    title: "Tom yum gai",
+    title: "Tom Yum Gai Recipe | EatsByTeks",
+    seoTitle: "Tom Yum Gai - EatsByTeks",
+    seoDescription: "Learn how to make this hot and sour Thai chicken soup with lemongrass, galangal and lime.",
     category: "Lunch",
     time: "35 min",
     image: A("tom-yum-gai.jpeg"),
@@ -878,6 +941,8 @@ export const recipes: Recipe[] = [
   {
     id: 45,
     title: "Beet-pickled deviled eggs",
+    seoTitle: "Beet-pickled deviled eggs - EatsByTeks",
+    seoDescription: "Learn how to make these vibrant pink pickled eggs with a creamy, seasoned yolk filling.",
     category: "Lunch",
     time: "40 min",
     image: A("beet-pickled-deviled-eggs.jpeg"),
@@ -897,7 +962,9 @@ export const recipes: Recipe[] = [
   },
   {
     id: 46,
-    title: "Mango cream swiss roll",
+    title: "Mango Cream Swiss Roll | EatsByTeks",
+    seoTitle: "Mango Cream Swiss Roll - EatsByTeks",
+    seoDescription: "Learn how to make this light and fluffy swiss roll filled with creamy mango custard and topped with fresh mango slices.",
     category: "Dessert",
     time: "50 min",
     image: A("mango-swiss.jpeg"),
@@ -934,7 +1001,9 @@ export const recipes: Recipe[] = [
   },
   {
     id: 50,
-    title: "Cardamom-coconut mahamri",
+    title: "Cardamom-Coconut Mahamri | EatsByTeks",
+    seoTitle: "Cardamom-Coconut Mahamri - EatsByTeks",
+    seoDescription: "Learn how to make these fluffy, golden Swahili doughnut triangles scented with cardamom and coconut.",
     category: "Breakfast",
     time: "1 hr 30 min",
     image: A("cardamom-coconut-mahamri.jpeg"),
@@ -954,7 +1023,9 @@ export const recipes: Recipe[] = [
   },
   {
     id: 51,
-    title: "Coconut beans",
+    title: "Coconut beans | EatsByTeks",
+    seoTitle: "Coconut beans - EatsByTeks",
+    seoDescription: "Learn how to make these tender kidney beans simmered in a creamy, lightly spiced coconut and tomato sauce.",
     category: "Lunch",
     time: "45 min",
     image: A("coconut-beans.jpeg"),
@@ -975,7 +1046,9 @@ export const recipes: Recipe[] = [
   },
   {
     id: 52,
-    title: "Goat biryani",
+    title: "Goat biryani | EatsByTeks",
+    seoTitle: "Goat biryani - EatsByTeks",
+    seoDescription: "Learn how to make this aromatic biryani with tender goat meat and fragrant basmati rice.",
     category: "Dinner",
     time: "2 hr",
     image: A("goat-biryani.jpeg"),
